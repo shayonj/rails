@@ -784,7 +784,7 @@ class MultipleFixturesTest < ActiveRecord::TestCase
   fixtures :developers, :accounts
 
   def test_fixture_table_names
-    assert_equal %w(topics developers accounts), fixture_table_names
+    assert_equal %w(accounts developers topics), fixture_table_names
   end
 end
 
@@ -816,7 +816,7 @@ class OverlappingFixturesTest < ActiveRecord::TestCase
   fixtures :developers, :accounts
 
   def test_fixture_table_names
-    assert_equal %w(topics developers accounts), fixture_table_names
+    assert_equal %w(accounts developers topics), fixture_table_names
   end
 end
 
@@ -1160,6 +1160,8 @@ class FixturesBrokenRollbackTest < ActiveRecord::TestCase
   alias_method :ar_teardown_fixtures, :teardown_fixtures
   alias_method :teardown_fixtures, :blank_teardown
   alias_method :teardown, :blank_teardown
+
+  fixtures rand.to_s # bypass fixtures cache
 
   def test_no_rollback_in_teardown_unless_transaction_active
     assert_equal 0, ActiveRecord::Base.connection.open_transactions
